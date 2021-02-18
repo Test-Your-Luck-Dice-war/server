@@ -12,17 +12,32 @@ const io = require('socket.io')(http, {
 });
 
 
+let name = []
 io.on('connection', (socket) => {
   let id = socket.id
   // console.log(socket)
-  // let name = []
   // console.log('user connected', socket)
   // socket.broadcast.emit('userConnected', )
-  socket.on('diconnected', () => {
-    console.log('masukk disconected >>>>>');
+  socket.on('disconnected', () => {
+    name = name.filter((el) => {
+      if(el.id !== id) {
+        return el
+      }
+    })
+    console.log(name)
   })
   socket.on('connected', (data) => {
-    console.log(data)
+    if(name.length < 2) {
+      name.push({
+        id,
+        name: data.name
+      })
+      console.log('masuk if <<<<<<')
+    } else {
+      socket.emit('isRoomFull', true)
+    }
+    console.log(name.length)
+    console.log(name)
   })
   
   socket.on('newMessage', (data) => {
