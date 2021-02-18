@@ -14,8 +14,13 @@ const io = require('socket.io')(http, {
 
 io.on('connection', (socket) => {
   let id = socket.id
+  // console.log(socket)
+  // let name = []
   // console.log('user connected', socket)
   // socket.broadcast.emit('userConnected', )
+  socket.on('diconnected', () => {
+    console.log('masukk disconected >>>>>');
+  })
   socket.on('connected', (data) => {
     console.log(data)
   })
@@ -30,9 +35,9 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('enemyRoll', {id, dice})
     
   })
-  socket.on('newBattle', (data) => {
-    console.log('Masuk Juga');
-  })
+  // socket.on('newBattle', (data) => {
+  //   console.log('Masuk Juga');
+  // })
   // socket.emit('')
 })
 
