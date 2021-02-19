@@ -11,25 +11,23 @@ const io = require('socket.io')(http, {
   allowEIO3: true
 });
 
-
 let room = []
-io.on('connection', (socket) => {
-  let id = socket.id
 
+io.on('connection', (socket) => {
   socket.on('joinGame', (data) => {
-    if(room.length === 0) {
+    if (room.length === 0) {
       room.push({
-        id,
-        name: data.name
+        id: socket.id,
+        name: data.name,
+        userId: data.id
       })
     } else if (room.length === 1) {
-      console.log(room);
       room.push({
-        id,
-        name: data.name
+        id: socket.id,
+        name: data.name,
+        userId: data.id
       })
       let opponent = room[0]
-      console.log('masuk if <<<<<<')
       socket.emit('joinsBattle', opponent)
       socket.broadcast.emit('joinsBattle', data)
     } else {
@@ -44,33 +42,30 @@ io.on('connection', (socket) => {
   socket.on('battle', (data) => {
     let dice = Math.floor(Math.random() * 6) + 1
     socket.emit('diceRoll', dice)
-    socket.broadcast.emit('enemyRoll', {id, dice})
+    socket.broadcast.emit('enemyRoll', { id: socket.id, dice })
   })
 
   socket.on('disconnected', () => {
     console.log('masuk', '<<<<<<<<<<<<<<<');
     room = []
     socket.broadcast.emit('enemyLeft')
-    // console.log(room)
+    console.log(room, 'kondisi client')
   })
 
-  socket.on('disconnect', (val) => {
-    console.log(val);
+  socket.on('disconnect', () => {
     room = room.filter((el) => {
-      if(el.id !== id) {
+      if(el.id !== socket.id) {
         return el
       }
     })
     socket.broadcast.emit('enemyLeft')
+    console.log(room,'kondisi keluar tab/refresh');
     // console.log(room)
   })
-  // socket.on('newBattle', (data) => {
-  //   console.log('Masuk Juga');
-  // })
-  // socket.emit('')
+  socket.on('refreshLogin', () => {
+
+  })
 })
-
-
 
 http.listen(PORT, () => {
   console.log('server running')
