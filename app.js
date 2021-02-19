@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000
 const http = require('http').Server(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://dice-910ff.web.app/",
+    origin: "https://dice-910ff.web.app",
     methods: ["GET", "POST"],
     credentials: true
   },
