@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development npx nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
     "socket.io": "^3.1.1"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.7"
   }
 }

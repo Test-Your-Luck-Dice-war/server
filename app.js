@@ -1,10 +1,13 @@
+if(process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
 const express = require('express')
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 const http = require('http').Server(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: "https://dice-910ff.web.app",
     methods: ["GET", "POST"],
     credentials: true
   },
